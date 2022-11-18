@@ -1,27 +1,47 @@
-<h2> Por País</h2>
-<hr>
-
-<div class="row">
-    <div class="col">
-       <app-pais-input
-        (onEnter)="buscar( $event )"
-        (onDebunce)="sugerencias( $event )"
-        placeholder="Buscar Pais...">
-    </app-pais-input>
+<div class="animate__animated animate__fadeIn">
+    <h2> Por País</h2>
+    <hr>
+<!--(onDebunce)="sugerencias( $event )"-->
+    <div class="row">
+        <div class="col">
+        <app-pais-input
+            (onEnter)="buscar( $event )"
+            (onDebunce)="sugerencias( $event )"
+            placeholder="Buscar Pais...">
+        </app-pais-input>
+        </div>
     </div>
-</div>
 
-<hr>
+    <ul *ngIf="mostrarSugerencias"
+        class="list-group">
+        <li *ngFor="let pais of paisesSugeridos"
+            class="list-group-item list-group-item-action">
+            <a class="text-decoration-none"
+                routerLink="pais/{{pais.alpha2Code}}">
+                {{ pais.name }}
+            </a>
+        </li>
+        <li  (click)="buscarSugerido(terminoSugerencia)"
+             class="list-group-item list-group-item-action"
+             >
+                <a class="text-decoration-none">
+                    Buscar<span class="text-dark"> ' {{ terminoSugerencia }} ' </span> 
+                </a>
+        </li>
+    </ul> 
+    <hr>
 
-<div *ngIf="hayError" 
-     class="alert alert-danger">
-        No se encontró nada con el termino {{ termino }}
-</div>
+    <div *ngIf="hayError" 
+        class="alert alert-danger animate__animated animate__fadeIn">
+            No se encontró nada con el termino {{ termino }}
+    </div>
 
-<div *ngIf="!hayError && paises.length > 0" class="row">
-    <div class="col">
-        <app-pais-tabla
-            [paises]="paises">
-         </app-pais-tabla>
+    <div *ngIf="!hayError && paises.length > 0" class="row">
+        <div class="col">
+            <app-pais-tabla
+                class="animate__animated animate__fadeIn"
+                [paises]="paises">
+            </app-pais-tabla>
+        </div>
     </div>
 </div>
