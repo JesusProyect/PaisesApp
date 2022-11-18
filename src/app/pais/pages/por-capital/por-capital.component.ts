@@ -11,6 +11,9 @@ import { PaisService } from '../../services/pais.service';
 export class PorCapitalComponent implements OnInit {
 
   termino : string = '';
+  terminoSugerencia: string = '';
+  mostrarSugerencias: boolean = false;
+  paisesSugeridos: Country[] = [];
   hayError: boolean = false;
   paises  : Country[] = [];
   
@@ -20,6 +23,8 @@ export class PorCapitalComponent implements OnInit {
 
   buscar( termino: string ){
     this.hayError = false;
+    this.mostrarSugerencias = false;
+    if(this.termino === termino){return}
     this.termino = termino;
 
     this.paisService.buscarCapital( this.termino )
@@ -34,9 +39,23 @@ export class PorCapitalComponent implements OnInit {
       });
   }
 
-  sugerencias( termino: string){
+  sugerencias( termino: string ){
     this.hayError = false;
+    if( this.terminoSugerencia === termino ){return}
+    this.mostrarSugerencias = true;
+    this.terminoSugerencia = termino;
     //TODO: crear sugerencias lo haremos en la siguiente seccion
+
+    this.paisService.buscarCapital( this.terminoSugerencia )
+
+      .subscribe({
+        next: (paises) => { this.paisesSugeridos = paises.splice(0,5)},
+        error: (e) => { this.paisesSugeridos = [] }
+      });
+  }
+
+  buscarSugerido( termino: string){
+    this.buscar( termino );
   }
 
 }
